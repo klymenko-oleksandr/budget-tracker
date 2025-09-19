@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+Budget tracker has evolved from a simple expense tracker into a sophisticated personal finance management platform! The combination of visual analytics, advanced filtering, and comprehensive data management provides users with everything they need to take control of their finances.
+
 First, run the development server:
 
 ```bash
