@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
+import { useState, useEffect, useCallback } from 'react';
+import { PieChart, Pie, PieLabel, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
+import { Transaction, Category } from '@/types'
 
 interface SpendingData {
   categoryId: string
@@ -12,6 +13,20 @@ interface SpendingData {
   budget: number | null
   transactionCount: number
 }
+
+interface TooltipPayload {
+  payload: SpendingData
+  value: number
+  name: string
+  color: string
+}
+
+interface PieLabelProps extends SpendingData {
+  percent: number
+  value: number
+}
+
+type TickFormatterValue = string | number
 
 interface SpendingChartProps {
   refreshTrigger?: number
@@ -25,19 +40,44 @@ export default function SpendingChart({ refreshTrigger, chartType = 'pie', timeR
   const [error, setError] = useState<string | null>(null)
   const [totalSpending, setTotalSpending] = useState(0)
 
-  useEffect(() => {
-    fetchSpendingData()
-  }, [refreshTrigger, timeRange])
+  const processSpendingData = useCallback((transactions: Transaction[], categories: Category[]): SpendingData[] => {
+    const categoryMap = new Map(categories.map(cat => [cat.id, cat]))
+    const spendingMap = new Map<string, SpendingData>()
 
-  const fetchSpendingData = async () => {
+    // Process transactions to calculate spending by category
+    transactions.forEach(transaction => {
+      if (transaction.type === 'EXPENSE' && transaction.categoryId) {
+        const category = categoryMap.get(transaction.categoryId)
+        if (category) {
+          const existing = spendingMap.get(transaction.categoryId) || {
+            categoryId: transaction.categoryId,
+            categoryName: category.name,
+            categoryIcon: category.icon || '📦',
+            categoryColor: category.color || '#6b7280',
+            totalSpent: 0,
+            budget: category.budget,
+            transactionCount: 0
+          }
+
+          existing.totalSpent += transaction.amount
+          existing.transactionCount += 1
+          spendingMap.set(transaction.categoryId, existing)
+        }
+      }
+    })
+
+    return Array.from(spendingMap.values()).sort((a, b) => b.totalSpent - a.totalSpent)
+  }, [])
+
+  const fetchSpendingData = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
-      
+
       // Calculate date range based on timeRange
       const now = new Date()
-      let startDate = new Date()
-      
+      const startDate = new Date()
+
       switch (timeRange) {
         case 'week':
           startDate.setDate(now.getDate() - 7)
@@ -74,36 +114,11 @@ export default function SpendingChart({ refreshTrigger, chartType = 'pie', timeR
     } finally {
       setLoading(false)
     }
-  }
+  }, [timeRange, processSpendingData])
 
-  const processSpendingData = (transactions: any[], categories: any[]): SpendingData[] => {
-    const categoryMap = new Map(categories.map(cat => [cat.id, cat]))
-    const spendingMap = new Map<string, SpendingData>()
-
-    // Process transactions to calculate spending by category
-    transactions.forEach(transaction => {
-      if (transaction.type === 'EXPENSE' && transaction.categoryId) {
-        const category = categoryMap.get(transaction.categoryId)
-        if (category) {
-          const existing = spendingMap.get(transaction.categoryId) || {
-            categoryId: transaction.categoryId,
-            categoryName: category.name,
-            categoryIcon: category.icon || '📦',
-            categoryColor: category.color || '#6b7280',
-            totalSpent: 0,
-            budget: category.budget,
-            transactionCount: 0
-          }
-
-          existing.totalSpent += transaction.amount
-          existing.transactionCount += 1
-          spendingMap.set(transaction.categoryId, existing)
-        }
-      }
-    })
-
-    return Array.from(spendingMap.values()).sort((a, b) => b.totalSpent - a.totalSpent)
-  }
+  useEffect(() => {
+    void fetchSpendingData()
+  }, [fetchSpendingData, refreshTrigger])
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -122,9 +137,9 @@ export default function SpendingChart({ refreshTrigger, chartType = 'pie', timeR
     }
   }
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: TooltipPayload[] }) => {
     if (active && payload && payload.length) {
-      const data = payload[0].payload
+      const data = payload[0].payload as SpendingData
       return (
         <div className="bg-white p-3 border border-slate-200 rounded-lg shadow-lg">
           <div className="flex items-center space-x-2 mb-2">
@@ -146,6 +161,8 @@ export default function SpendingChart({ refreshTrigger, chartType = 'pie', timeR
     }
     return null
   }
+
+  const pieLabel: PieLabel = (({ categoryName, percent }: PieLabelProps) => `${categoryName} ${(percent * 100).toFixed(0)}%`) as unknown as PieLabel;
 
   if (loading) {
     return (
@@ -204,11 +221,11 @@ export default function SpendingChart({ refreshTrigger, chartType = 'pie', timeR
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={data}
+                data={data as unknown as Record<string, unknown>[]}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ categoryName, percent }) => `${categoryName} ${(percent * 100).toFixed(0)}%`}
+                label={pieLabel}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="totalSpent"
@@ -217,7 +234,7 @@ export default function SpendingChart({ refreshTrigger, chartType = 'pie', timeR
                   <Cell key={`cell-${index}`} fill={entry.categoryColor} />
                 ))}
               </Pie>
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={CustomTooltip} />
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -226,15 +243,15 @@ export default function SpendingChart({ refreshTrigger, chartType = 'pie', timeR
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis 
-                dataKey="categoryName" 
+              <XAxis
+                dataKey="categoryName"
                 tick={{ fontSize: 12 }}
                 angle={-45}
                 textAnchor="end"
                 height={80}
               />
-              <YAxis tickFormatter={(value) => `$${value}`} />
-              <Tooltip content={<CustomTooltip />} />
+              <YAxis tickFormatter={(value: TickFormatterValue) => `$${value}`} />
+              <Tooltip content={CustomTooltip} />
               <Legend />
               <Bar dataKey="totalSpent" name="Spent" fill="#ef4444" />
               <Bar dataKey="budget" name="Budget" fill="#22c55e" />
@@ -248,7 +265,7 @@ export default function SpendingChart({ refreshTrigger, chartType = 'pie', timeR
         <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-2">
           {data.slice(0, 6).map((item, index) => (
             <div key={index} className="flex items-center space-x-2 text-sm">
-              <div 
+              <div
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: item.categoryColor }}
               />
