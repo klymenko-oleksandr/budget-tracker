@@ -4,30 +4,86 @@ import { useState, useEffect } from 'react'
 import { TransactionType } from '@prisma/client'
 import { Transaction } from '@/types'
 
+interface FilterOptions {
+  search: string
+  type: TransactionType | 'ALL'
+  categoryId: string
+  startDate: string
+  endDate: string
+  minAmount: string
+  maxAmount: string
+}
+
 interface TransactionListProps {
   refreshTrigger?: number
   onEditTransaction?: (transaction: Transaction) => void
+  filters?: FilterOptions
+  onTransactionsChange?: (transactions: Transaction[]) => void
 }
 
-export default function TransactionList({ refreshTrigger, onEditTransaction }: TransactionListProps) {
+export default function TransactionList({ refreshTrigger, onEditTransaction, filters, onTransactionsChange }: TransactionListProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchTransactions()
-  }, [refreshTrigger])
+  }, [refreshTrigger, filters])
 
   const fetchTransactions = async () => {
     try {
       setLoading(true)
       setError(null)
       
-      const response = await fetch('/api/transactions')
+      // Build query parameters from filters
+      const queryParams = new URLSearchParams()
+      
+      if (filters?.startDate) {
+        queryParams.append('startDate', new Date(filters.startDate).toISOString())
+      }
+      if (filters?.endDate) {
+        const endDate = new Date(filters.endDate)
+        endDate.setHours(23, 59, 59, 999) // End of day
+        queryParams.append('endDate', endDate.toISOString())
+      }
+      if (filters?.type && filters.type !== 'ALL') {
+        queryParams.append('type', filters.type)
+      }
+      if (filters?.categoryId) {
+        queryParams.append('categoryId', filters.categoryId)
+      }
+      if (filters?.minAmount) {
+        queryParams.append('minAmount', filters.minAmount)
+      }
+      if (filters?.maxAmount) {
+        queryParams.append('maxAmount', filters.maxAmount)
+      }
+      
+      queryParams.append('limit', '1000') // Get more transactions for filtering
+      
+      const url = `/api/transactions${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
+      const response = await fetch(url)
       const data = await response.json()
 
       if (data.success) {
-        setTransactions(data.data.transactions)
+        let filteredTransactions = data.data.transactions
+        
+        // Client-side filtering for search (since API doesn't support text search yet)
+        if (filters?.search) {
+          const searchTerm = filters.search.toLowerCase()
+          filteredTransactions = filteredTransactions.filter((transaction: Transaction) =>
+            (transaction.description?.toLowerCase().includes(searchTerm)) ||
+            (transaction.note?.toLowerCase().includes(searchTerm)) ||
+            (transaction.category?.name?.toLowerCase().includes(searchTerm))
+          )
+        }
+        
+        setTransactions(filteredTransactions)
+        
+        // Notify parent component of current transactions for export
+        if (onTransactionsChange) {
+          onTransactionsChange(filteredTransactions)
+        }
       } else {
         setError(data.error || 'Failed to fetch transactions')
       }

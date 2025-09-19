@@ -6,12 +6,16 @@ import { Transaction } from '@/types';
 import TransactionForm from '@/components/TransactionForm';
 import TransactionList from '@/components/TransactionList';
 import TransactionEditForm from '@/components/TransactionEditForm';
+import TransactionFilters, { FilterOptions } from '@/components/TransactionFilters';
+import TransactionExport from '@/components/TransactionExport';
 
 export default function TransactionsPage() {
   const { isSignedIn, user, isLoaded } = useUser()
   const [showForm, setShowForm] = useState(false)
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
   const [refreshTrigger, setRefreshTrigger] = useState(0)
+  const [filters, setFilters] = useState<FilterOptions | undefined>(undefined)
+  const [currentTransactions, setCurrentTransactions] = useState<Transaction[]>([])
 
   const handleTransactionSuccess = () => {
     setShowForm(false)
@@ -26,6 +30,15 @@ export default function TransactionsPage() {
 
   const handleEditCancel = () => {
     setEditingTransaction(null)
+  }
+
+  const handleFiltersChange = (newFilters: FilterOptions) => {
+    setFilters(newFilters)
+  }
+
+  const handleFiltersReset = () => {
+    setFilters(undefined)
+    setRefreshTrigger(prev => prev + 1)
   }
 
   if (!isLoaded) {
@@ -97,10 +110,24 @@ export default function TransactionsPage() {
           />
         )}
 
+        {/* Transaction Filters */}
+        <TransactionFilters
+          onFiltersChange={handleFiltersChange}
+          onReset={handleFiltersReset}
+        />
+
         {/* Transaction List */}
         <TransactionList 
           refreshTrigger={refreshTrigger}
           onEditTransaction={handleEditTransaction}
+          filters={filters}
+          onTransactionsChange={setCurrentTransactions}
+        />
+
+        {/* Transaction Export */}
+        <TransactionExport 
+          transactions={currentTransactions}
+          filters={filters}
         />
       </div>
     </div>
