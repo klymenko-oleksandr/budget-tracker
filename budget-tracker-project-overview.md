@@ -26,7 +26,7 @@ Build a full-featured **budget tracker app** with:
 
 ---
 
-## ✅ Phase 1 – Core App Setup (IN PROGRESS)
+## ✅ Phase 1 – Core App Setup (~95% COMPLETE)
 
 ### ✅ DONE
 - Initialized Next.js app with TypeScript, Tailwind
@@ -38,69 +38,126 @@ Build a full-featured **budget tracker app** with:
 - Created `middleware.ts` with `clerkMiddleware`
 - Chose `slate` as base Tailwind color
 - Added navigation UI inside `app/page.tsx` with Clerk-based auth state
+- Added `layout.tsx` with shared `<Navbar>`
+- Scaffold pages:
+    - `/dashboard`
+    - `/transactions`
+    - `/categories`
+- **✅ Created comprehensive Prisma schema:**
+  - `User` model with `clerkId` integration
+  - `Transaction` model with currency support
+  - `Category` model with budget tracking
+  - `Account` model for multiple account types
+  - Proper relationships and indexes
+- **✅ Set up Prisma Client** (`/src/lib/prisma.ts`)
+- **✅ Generated Prisma Client** (synced with schema)
+- **✅ Created Clerk-Prisma integration utilities** (`/src/lib/user.ts`):
+  - `getOrCreateUser()` - Auto-creates DB users from Clerk
+  - `getCurrentUser()` - Safe user retrieval
+  - `requireUser()` - For protected operations
+- **✅ Built default categories system** (`/src/lib/default-categories.ts`):
+  - 10 predefined categories with budgets, colors, icons
+  - Auto-creation for new users
+- **✅ Added database testing utilities** (`/src/lib/db-test.ts`)
 
 ### 🔜 TO DO (Phase 1 Completion)
-- Add `layout.tsx` with shared `<Navbar>`
-- Scaffold pages:
-  - `/dashboard`
-  - `/transactions`
-  - `/categories`
-- Create initial Prisma schema:
-  - `User`, `Transaction`, `Category`, `Account` (optional for now)
-- Set up Prisma Client, connect to PostgreSQL
-- Add Clerk user ID to Prisma models
+- **Run Prisma migration** to create PostgreSQL tables:
+  ```bash
+  npx prisma migrate dev --name init
+  ```
+- Test full database functionality
 
 ---
 
-## 🧱 Prisma Schema (Planned)
+## 🧱 Prisma Schema (✅ IMPLEMENTED)
 
 \`\`\`prisma
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
+  id           String        @id @default(cuid())
+  clerkId      String        @unique // Clerk user ID for authentication
+  email        String        @unique
+  name         String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   transactions Transaction[]
-  categories Category[]
-  accounts   Account[]
+  accounts     Account[]
+  categories   Category[]
 }
 
 model Transaction {
-  id          String     @id @default(cuid())
+  id          String          @id @default(cuid())
   type        TransactionType
   amount      Float
+  currency    String          @default("USD") // USD, UAH, EUR, etc.
   date        DateTime
+  description String?
   note        String?
-  category    Category?  @relation(fields: [categoryId], references: [id])
+  category    Category?       @relation(fields: [categoryId], references: [id])
   categoryId  String?
-  account     Account?   @relation(fields: [accountId], references: [id])
+  account     Account?        @relation(fields: [accountId], references: [id])
   accountId   String?
-  user        User       @relation(fields: [userId], references: [id])
+  user        User            @relation(fields: [userId], references: [id])
   userId      String
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([date])
+  @@index([categoryId])
 }
 
 model Category {
-  id     String        @id @default(cuid())
-  name   String
-  user   User          @relation(fields: [userId], references: [id])
-  userId String
+  id           String        @id @default(cuid())
+  name         String
+  description  String?
+  color        String?       // Hex color for UI display
+  icon         String?       // Icon identifier for UI
+  budget       Float?        // Monthly budget for this category
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String
   transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([name, userId]) // Unique category names per user
+  @@index([userId])
 }
 
 model Account {
-  id     String        @id @default(cuid())
-  name   String
-  type   String        // e.g., "monobank", "binance"
-  currency String      // e.g., "UAH", "USD"
-  user   User          @relation(fields: [userId], references: [id])
-  userId String
+  id           String        @id @default(cuid())
+  name         String
+  type         AccountType   @default(manual)
+  currency     String        @default("USD")
+  balance      Float         @default(0)
+  isActive     Boolean       @default(true)
+  // Integration specific fields
+  apiToken     String?       // For Monobank, Binance, etc.
+  apiSecret    String?       // Encrypted API secrets
+  lastSyncAt   DateTime?
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String
   transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([userId])
 }
 
 enum TransactionType {
-  spend
-  earn
-  transfer
-  returning
+  INCOME
+  EXPENSE
+  TRANSFER
+  INVESTMENT
+  REFUND
+}
+
+enum AccountType {
+  manual      // Manually added transactions
+  monobank    // Monobank integration
+  binance     // Binance integration
+  broker      // IBKR, Freedom Finance CSV uploads
+  crypto      // Other crypto exchanges
+  bank        // Other bank integrations
 }
 \`\`\`
 
@@ -108,10 +165,15 @@ enum TransactionType {
 
 ## 📊 Roadmap Phases
 
-### Phase 1: App + Auth + DB (✅ ~80% done)
-- Auth, UI shell, nav, Clerk integration
-- Basic layout and routing
-- DB schema (in progress)
+### Phase 1: App + Auth + DB (✅ ~95% done)
+- ✅ Auth, UI shell, nav, Clerk integration
+- ✅ Basic layout and routing
+- ✅ Comprehensive DB schema with Clerk integration
+- ✅ Prisma Client setup and generation
+- ✅ User management utilities (`/src/lib/user.ts`)
+- ✅ Default categories system (`/src/lib/default-categories.ts`)
+- ✅ Database testing utilities (`/src/lib/db-test.ts`)
+- 🔜 Database migration (requires PostgreSQL setup)
 
 ### Phase 2: Budgets + Manual Transaction Input
 - Monthly budgets per category
