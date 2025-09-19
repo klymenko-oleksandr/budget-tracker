@@ -2,32 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { TransactionType } from '@prisma/client'
-
-interface Transaction {
-  id: string
-  type: TransactionType
-  amount: number
-  currency: string
-  date: string
-  description: string | null
-  note: string | null
-  category: {
-    id: string
-    name: string
-    color: string
-    icon: string
-  } | null
-  account: {
-    id: string
-    name: string
-  } | null
-}
+import { Transaction } from '@/types'
 
 interface TransactionListProps {
   refreshTrigger?: number
+  onEditTransaction?: (transaction: Transaction) => void
 }
 
-export default function TransactionList({ refreshTrigger }: TransactionListProps) {
+export default function TransactionList({ refreshTrigger, onEditTransaction }: TransactionListProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -212,13 +194,25 @@ export default function TransactionList({ refreshTrigger }: TransactionListProps
                 {formatAmount(transaction.amount, transaction.currency, transaction.type)}
               </span>
               
-              <button
-                onClick={() => handleDelete(transaction.id)}
-                className="text-red-500 hover:text-red-700 p-1 rounded transition-colors"
-                title="Delete transaction"
-              >
-                🗑️
-              </button>
+              <div className="flex space-x-1">
+                {onEditTransaction && (
+                  <button
+                    onClick={() => onEditTransaction(transaction)}
+                    className="text-slate-500 hover:text-slate-700 p-1 rounded transition-colors"
+                    title="Edit transaction"
+                  >
+                    ✏️
+                  </button>
+                )}
+                
+                <button
+                  onClick={() => handleDelete(transaction.id)}
+                  className="text-red-500 hover:text-red-700 p-1 rounded transition-colors"
+                  title="Delete transaction"
+                >
+                  🗑️
+                </button>
+              </div>
             </div>
           </div>
         ))}

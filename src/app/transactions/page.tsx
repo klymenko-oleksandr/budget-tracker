@@ -2,17 +2,30 @@
 
 import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { Transaction } from '@/types';
 import TransactionForm from '@/components/TransactionForm';
 import TransactionList from '@/components/TransactionList';
+import TransactionEditForm from '@/components/TransactionEditForm';
 
 export default function TransactionsPage() {
   const { isSignedIn, user, isLoaded } = useUser()
   const [showForm, setShowForm] = useState(false)
+  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
   const [refreshTrigger, setRefreshTrigger] = useState(0)
 
   const handleTransactionSuccess = () => {
     setShowForm(false)
+    setEditingTransaction(null)
     setRefreshTrigger(prev => prev + 1) // Trigger refresh of transaction list
+  }
+
+  const handleEditTransaction = (transaction: Transaction) => {
+    setEditingTransaction(transaction)
+    setShowForm(false)
+  }
+
+  const handleEditCancel = () => {
+    setEditingTransaction(null)
   }
 
   if (!isLoaded) {
@@ -45,17 +58,26 @@ export default function TransactionsPage() {
       </div>
 
       <div className="space-y-6">
-        {/* Add Transaction Button/Form */}
+        {/* Action Buttons */}
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold text-slate-800">Manage Transactions</h2>
-          {!showForm && (
-            <button 
-              onClick={() => setShowForm(true)}
-              className="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors"
+          <div className="flex gap-3">
+            {!showForm && !editingTransaction && (
+              <button 
+                onClick={() => setShowForm(true)}
+                className="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors"
+              >
+                ➕ Add Transaction
+              </button>
+            )}
+            
+            <button
+              onClick={() => setRefreshTrigger(prev => prev + 1)}
+              className="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-200 transition-colors"
             >
-              ➕ Add Transaction
+              🔄 Refresh
             </button>
-          )}
+          </div>
         </div>
 
         {/* Transaction Form */}
@@ -66,8 +88,20 @@ export default function TransactionsPage() {
           />
         )}
 
+        {/* Transaction Edit Form */}
+        {editingTransaction && (
+          <TransactionEditForm
+            transaction={editingTransaction}
+            onSuccess={handleTransactionSuccess}
+            onCancel={handleEditCancel}
+          />
+        )}
+
         {/* Transaction List */}
-        <TransactionList refreshTrigger={refreshTrigger} />
+        <TransactionList 
+          refreshTrigger={refreshTrigger}
+          onEditTransaction={handleEditTransaction}
+        />
       </div>
     </div>
   );
