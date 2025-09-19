@@ -67,3 +67,40 @@ export async function checkDatabaseSchema() {
     }
   }
 }
+
+/**
+ * Test complete database setup including schema verification
+ */
+export async function testCompleteSetup() {
+  console.log('🧪 Testing complete database setup...\n')
+  
+  // Test connection
+  const connectionTest = await testDatabaseConnection()
+  if (!connectionTest.success) {
+    return connectionTest
+  }
+  
+  // Test schema
+  console.log('🔍 Checking database schema...')
+  const schemaTest = await checkDatabaseSchema()
+  
+  if (schemaTest.success) {
+    console.log('✅ All database tables verified:')
+    console.log('   - User table: ✅')
+    console.log('   - Category table: ✅') 
+    console.log('   - Account table: ✅')
+    console.log('   - Transaction table: ✅')
+  } else {
+    console.log('❌ Schema verification failed:', schemaTest.message)
+    console.log('   Table status:', schemaTest.tables)
+  }
+  
+  return {
+    success: connectionTest.success && schemaTest.success,
+    connection: connectionTest,
+    schema: schemaTest,
+    message: schemaTest.success 
+      ? '🎉 Database setup is complete and fully functional!'
+      : 'Database setup has issues that need to be resolved'
+  }
+}
