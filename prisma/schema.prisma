@@ -9,49 +9,88 @@ datasource db {
 
 model User {
   id           String        @id @default(cuid())
+  clerkId      String        @unique // Clerk user ID for authentication
   email        String        @unique
   name         String?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   transactions Transaction[]
   accounts     Account[]
-  Category     Category[]
+  categories   Category[]
 }
 
 model Transaction {
-  id         String          @id @default(cuid())
-  type       TransactionType
-  amount     Float
-  date       DateTime
-  note       String?
-  category   Category?       @relation(fields: [categoryId], references: [id])
-  categoryId String?
-  account    Account?        @relation(fields: [accountId], references: [id])
-  accountId  String?
-  user       User            @relation(fields: [userId], references: [id])
-  userId     String
+  id          String          @id @default(cuid())
+  type        TransactionType
+  amount      Float
+  currency    String          @default("USD") // USD, UAH, EUR, etc.
+  date        DateTime
+  description String?
+  note        String?
+  category    Category?       @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+  account     Account?        @relation(fields: [accountId], references: [id])
+  accountId   String?
+  user        User            @relation(fields: [userId], references: [id])
+  userId      String
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([date])
+  @@index([categoryId])
 }
 
 model Category {
   id           String        @id @default(cuid())
   name         String
+  description  String?
+  color        String?       // Hex color for UI display
+  icon         String?       // Icon identifier for UI
+  budget       Float?        // Monthly budget for this category
   user         User          @relation(fields: [userId], references: [id])
   userId       String
   transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([name, userId]) // Unique category names per user
+  @@index([userId])
 }
 
 model Account {
   id           String        @id @default(cuid())
   name         String
+  type         AccountType   @default(manual)
+  currency     String        @default("USD")
+  balance      Float         @default(0)
+  isActive     Boolean       @default(true)
+  // Integration specific fields
+  apiToken     String?       // For Monobank, Binance, etc.
+  apiSecret    String?       // Encrypted API secrets
+  lastSyncAt   DateTime?
   user         User          @relation(fields: [userId], references: [id])
   userId       String
   transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([userId])
 }
 
 enum TransactionType {
-  spend
-  earn
-  transfer
-  returning
-  investment
+  INCOME
+  EXPENSE
+  TRANSFER
+  INVESTMENT
+  REFUND
+}
+
+enum AccountType {
+  manual      // Manually added transactions
+  monobank    // Monobank integration
+  binance     // Binance integration
+  broker      // IBKR, Freedom Finance CSV uploads
+  crypto      // Other crypto exchanges
+  bank        // Other bank integrations
 }
