@@ -54,3 +54,6 @@ export async function requireUser() {
   const user = await getOrCreateUser()
   return user.id
 }
+
+// Re-export getUserCategories from default-categories for convenience
+export { getUserCategories } from './default-categories'
