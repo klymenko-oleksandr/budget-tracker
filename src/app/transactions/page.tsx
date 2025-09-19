@@ -1,9 +1,19 @@
 'use client';
 
+import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
+import TransactionForm from '@/components/TransactionForm';
+import TransactionList from '@/components/TransactionList';
 
 export default function TransactionsPage() {
   const { isSignedIn, user, isLoaded } = useUser()
+  const [showForm, setShowForm] = useState(false)
+  const [refreshTrigger, setRefreshTrigger] = useState(0)
+
+  const handleTransactionSuccess = () => {
+    setShowForm(false)
+    setRefreshTrigger(prev => prev + 1) // Trigger refresh of transaction list
+  }
 
   if (!isLoaded) {
     return (
@@ -28,29 +38,36 @@ export default function TransactionsPage() {
   }
 
   return (
-    <div className="p-10">
+    <div className="p-10 max-w-6xl mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Transactions 💳</h1>
         <p className="text-slate-600">Track and manage all your income and expenses</p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold">All Transactions</h2>
-          <button className="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
-            Add Transaction
-          </button>
+      <div className="space-y-6">
+        {/* Add Transaction Button/Form */}
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-semibold text-slate-800">Manage Transactions</h2>
+          {!showForm && (
+            <button 
+              onClick={() => setShowForm(true)}
+              className="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              ➕ Add Transaction
+            </button>
+          )}
         </div>
-        
-        <div className="text-center py-12 text-slate-500">
-          <div className="mb-4">
-            <svg className="mx-auto h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-            </svg>
-          </div>
-          <p className="text-lg font-medium mb-2">No transactions yet</p>
-          <p>Start by adding your first transaction to track your finances.</p>
-        </div>
+
+        {/* Transaction Form */}
+        {showForm && (
+          <TransactionForm 
+            onSuccess={handleTransactionSuccess}
+            onCancel={() => setShowForm(false)}
+          />
+        )}
+
+        {/* Transaction List */}
+        <TransactionList refreshTrigger={refreshTrigger} />
       </div>
     </div>
   );
