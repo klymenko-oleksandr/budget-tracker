@@ -21,22 +21,25 @@ export async function GET(request: NextRequest) {
       ? new Date(searchParams.get('endDate')!) 
       : endOfMonth
 
-    // Get user categories with budgets
-    const categories = await getUserCategories(user.id)
-
-    // Get transactions for the date range
-    const transactions = await prisma.transaction.findMany({
-      where: {
-        userId: user.id,
-        date: {
-          gte: startDate,
-          lte: endDate
+    // Optimize: Get categories and transactions in parallel
+    const [categories, transactions] = await Promise.all([
+      getUserCategories(user.id),
+      prisma.transaction.findMany({
+        where: {
+          userId: user.id,
+          date: {
+            gte: startDate,
+            lte: endDate
+          }
+        },
+        include: {
+          category: true
+        },
+        orderBy: {
+          date: 'desc'
         }
-      },
-      include: {
-        category: true
-      }
-    })
+      })
+    ])
 
     // Calculate spending by category
     const spendingByCategory = new Map<string, number>()
@@ -98,20 +101,8 @@ export async function GET(request: NextRequest) {
     const totalBudget = categories.reduce((sum, cat) => sum + (cat.budget || 0), 0)
     const totalBudgetUsed = totalBudget > 0 ? (totalExpenses / totalBudget) * 100 : 0
 
-    // Recent transactions (last 10)
-    const recentTransactions = await prisma.transaction.findMany({
-      where: {
-        userId: user.id
-      },
-      include: {
-        category: true,
-        account: true
-      },
-      orderBy: {
-        date: 'desc'
-      },
-      take: 10
-    })
+    // Use already fetched transactions for recent transactions (no additional query needed)
+    const recentTransactions = transactions.slice(0, 10)
 
     return NextResponse.json({
       success: true,

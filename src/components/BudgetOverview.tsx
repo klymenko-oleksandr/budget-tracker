@@ -1,65 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { memo } from 'react'
+import { useDashboardData } from '@/hooks/useDashboardData'
 
-interface CategoryAnalytic {
-  id: string
-  name: string
-  color: string
-  icon: string
-  budget: number
-  spent: number
-  remaining: number
-  percentUsed: number
-  isOverBudget: boolean
-}
-
-interface DashboardData {
-  summary: {
-    totalIncome: number
-    totalExpenses: number
-    netIncome: number
-    totalBudget: number
-    totalBudgetUsed: number
-    budgetRemaining: number
-  }
-  categoryAnalytics: CategoryAnalytic[]
-  recentTransactions: any[]
-  dateRange: {
-    startDate: string
-    endDate: string
-  }
-}
-
-export default function BudgetOverview() {
-  const [data, setData] = useState<DashboardData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    fetchDashboardData()
-  }, [])
-
-  const fetchDashboardData = async () => {
-    try {
-      setLoading(true)
-      setError(null)
-      
-      const response = await fetch('/api/dashboard')
-      const result = await response.json()
-
-      if (result.success) {
-        setData(result.data)
-      } else {
-        setError(result.error || 'Failed to fetch dashboard data')
-      }
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error)
-      setError('Failed to fetch dashboard data')
-    } finally {
-      setLoading(false)
-    }
-  }
+function BudgetOverview() {
+  const { data, isLoading: loading, error, refetch } = useDashboardData('month')
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -112,9 +57,9 @@ export default function BudgetOverview() {
     return (
       <div className="bg-white p-6 rounded-lg shadow-md border">
         <div className="text-center py-8">
-          <p className="text-red-600 mb-4">❌ {error}</p>
+          <p className="text-red-600 mb-4">❌ {error instanceof Error ? error.message : 'Failed to fetch dashboard data'}</p>
           <button
-            onClick={fetchDashboardData}
+            onClick={() => refetch()}
             className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors"
           >
             Try Again
@@ -264,3 +209,6 @@ export default function BudgetOverview() {
     </div>
   )
 }
+
+// Memoize the component to prevent unnecessary re-renders
+export default memo(BudgetOverview)

@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { memo } from 'react';
 import { PieChart, Pie, PieLabel, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
-import { Transaction, Category } from '@/types'
+import { useSpendingData } from '@/hooks/useDashboardData'
 
 interface SpendingData {
   categoryId: string
@@ -34,91 +34,15 @@ interface SpendingChartProps {
   timeRange?: 'week' | 'month' | 'quarter' | 'year'
 }
 
-export default function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = 'month' }: SpendingChartProps) {
-  const [data, setData] = useState<SpendingData[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [totalSpending, setTotalSpending] = useState(0)
+function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = 'month' }: SpendingChartProps) {
+  const { data, totalSpending, isLoading: loading, error, refetch } = useSpendingData(timeRange)
 
-  const processSpendingData = useCallback((transactions: Transaction[], categories: Category[]): SpendingData[] => {
-    const categoryMap = new Map(categories.map(cat => [cat.id, cat]))
-    const spendingMap = new Map<string, SpendingData>()
-
-    // Process transactions to calculate spending by category
-    transactions.forEach(transaction => {
-      if (transaction.type === 'EXPENSE' && transaction.categoryId) {
-        const category = categoryMap.get(transaction.categoryId)
-        if (category) {
-          const existing = spendingMap.get(transaction.categoryId) || {
-            categoryId: transaction.categoryId,
-            categoryName: category.name,
-            categoryIcon: category.icon || '📦',
-            categoryColor: category.color || '#6b7280',
-            totalSpent: 0,
-            budget: category.budget,
-            transactionCount: 0
-          }
-
-          existing.totalSpent += transaction.amount
-          existing.transactionCount += 1
-          spendingMap.set(transaction.categoryId, existing)
-        }
-      }
-    })
-
-    return Array.from(spendingMap.values()).sort((a, b) => b.totalSpent - a.totalSpent)
-  }, [])
-
-  const fetchSpendingData = useCallback(async () => {
-    try {
-      setLoading(true)
-      setError(null)
-
-      // Calculate date range based on timeRange
-      const now = new Date()
-      const startDate = new Date()
-
-      switch (timeRange) {
-        case 'week':
-          startDate.setDate(now.getDate() - 7)
-          break
-        case 'month':
-          startDate.setMonth(now.getMonth() - 1)
-          break
-        case 'quarter':
-          startDate.setMonth(now.getMonth() - 3)
-          break
-        case 'year':
-          startDate.setFullYear(now.getFullYear() - 1)
-          break
-      }
-
-      const response = await fetch(`/api/transactions?startDate=${startDate.toISOString()}&endDate=${now.toISOString()}&limit=1000`)
-      const transactionData = await response.json()
-
-      if (transactionData.success) {
-        const categoryResponse = await fetch('/api/categories')
-        const categoryData = await categoryResponse.json()
-
-        if (categoryData.success) {
-          const spendingByCategory = processSpendingData(transactionData.data.transactions, categoryData.data)
-          setData(spendingByCategory)
-          setTotalSpending(spendingByCategory.reduce((sum, item) => sum + item.totalSpent, 0))
-        }
-      } else {
-        setError(transactionData.error || 'Failed to fetch spending data')
-      }
-    } catch (error) {
-      console.error('Error fetching spending data:', error)
-      setError('Failed to fetch spending data')
-    } finally {
-      setLoading(false)
+  // Trigger refetch when refreshTrigger changes
+  React.useEffect(() => {
+    if (typeof refreshTrigger === 'number' && refreshTrigger > 0) {
+      void refetch()
     }
-  }, [timeRange, processSpendingData])
-
-  useEffect(() => {
-    void fetchSpendingData()
-  }, [fetchSpendingData, refreshTrigger])
+  }, [refreshTrigger, refetch])
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -179,9 +103,9 @@ export default function SpendingChart({ refreshTrigger, chartType = 'pie', timeR
     return (
       <div className="bg-white p-6 rounded-lg shadow-md border">
         <div className="text-center py-8">
-          <p className="text-red-600 mb-4">❌ {error}</p>
+          <p className="text-red-600 mb-4">❌ {error.message}</p>
           <button
-            onClick={fetchSpendingData}
+            onClick={() => refetch()}
             className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors"
           >
             Try Again
@@ -305,3 +229,6 @@ export default function SpendingChart({ refreshTrigger, chartType = 'pie', timeR
     </div>
   )
 }
+
+// Memoize the component to prevent unnecessary re-renders
+export default memo(SpendingChart)
