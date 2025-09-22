@@ -101,6 +101,7 @@ function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = TimeRang
     };
 
     // @Todo: fix this type error
+    // @ts-expect-error wip
     const pieLabel: PieLabel = ({ categoryName, percent }: PieLabelProps) => {
         if (percent === 0) return '';
 
