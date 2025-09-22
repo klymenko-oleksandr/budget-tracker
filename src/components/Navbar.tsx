@@ -1,13 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import { Badge } from '@/components/ui/badge';
 
 export default function Navbar() {
     return (
         <header className="border-b bg-white px-6 py-4 shadow-sm flex justify-between items-center">
-            <Link href="/" className="text-xl font-bold hover:text-slate-700 transition-colors">
+            <Link href="/" className="text-xl font-bold hover:text-slate-700 transition-colors flex items-center gap-2">
                 💰 Budget Tracker
+                <Badge className="text-xs">beta</Badge>
             </Link>
 
             <nav className="flex gap-6">
