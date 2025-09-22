@@ -153,7 +153,9 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
             return NextResponse.json(
                 {
                     success: false,
-                    error: `Cannot delete category. It has ${transactionCount} associated transactions. Please reassign or delete those transactions first.`,
+                    error:
+                        `Cannot delete category. It has ${transactionCount} associated transactions. ` +
+                        `Please reassign or delete those transactions first.`,
                 },
                 { status: 400 }
             );

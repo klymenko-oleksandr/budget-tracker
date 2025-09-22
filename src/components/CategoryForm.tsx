@@ -173,7 +173,8 @@ export default function CategoryForm({ category, onSuccess, onCancel, mode = 'ed
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="e.g., Food & Dining, Transportation"
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                        className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                         required
                     />
                 </div>
@@ -190,7 +191,8 @@ export default function CategoryForm({ category, onSuccess, onCancel, mode = 'ed
                         onChange={handleChange}
                         rows={2}
                         placeholder="Brief description of this category (optional)"
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                        className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                     />
                 </div>
 
@@ -210,7 +212,8 @@ export default function CategoryForm({ category, onSuccess, onCancel, mode = 'ed
                             step="0.01"
                             min="0"
                             placeholder="0.00"
-                            className="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                            className={`w-full pl-8 pr-3 py-2 border border-slate-300 rounded-md 
+                                       focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                         />
                     </div>
                     <p className="text-xs text-slate-500 mt-1">Set your monthly spending limit for this category</p>
@@ -272,7 +275,9 @@ export default function CategoryForm({ category, onSuccess, onCancel, mode = 'ed
                     <button
                         type="submit"
                         disabled={loading}
-                        className="flex-1 bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className={`flex-1 bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-700 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 
+                                   disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
                     >
                         {loading
                             ? mode === 'create'
@@ -287,7 +292,8 @@ export default function CategoryForm({ category, onSuccess, onCancel, mode = 'ed
                         <button
                             type="button"
                             onClick={onCancel}
-                            className="px-4 py-2 border border-slate-300 text-slate-700 rounded-md hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors"
+                            className={`px-4 py-2 border border-slate-300 text-slate-700 rounded-md hover:bg-slate-50 
+                                       focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors`}
                         >
                             Cancel
                         </button>

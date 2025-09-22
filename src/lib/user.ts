@@ -43,7 +43,7 @@ export async function getOrCreateUser() {
 export async function getCurrentUser() {
     try {
         return await getOrCreateUser();
-    } catch (error) {
+    } catch {
         return null;
     }
 }

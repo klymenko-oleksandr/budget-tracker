@@ -149,7 +149,8 @@ export default function TransactionEditForm({ transaction, onSuccess, onCancel }
                         name="type"
                         value={formData.type}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                        className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                         required
                     >
                         <option value="EXPENSE">💸 Expense</option>
@@ -176,7 +177,8 @@ export default function TransactionEditForm({ transaction, onSuccess, onCancel }
                             step="0.01"
                             min="0"
                             placeholder="0.00"
-                            className="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                            className={`w-full pl-8 pr-3 py-2 border border-slate-300 rounded-md 
+                                       focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                             required
                         />
                     </div>
@@ -193,7 +195,8 @@ export default function TransactionEditForm({ transaction, onSuccess, onCancel }
                         name="date"
                         value={formData.date}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                        className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                         required
                     />
                 </div>
@@ -208,7 +211,8 @@ export default function TransactionEditForm({ transaction, onSuccess, onCancel }
                         name="categoryId"
                         value={formData.categoryId}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                        className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                     >
                         <option value="">Select a category (optional)</option>
                         {categories.map((category) => (
@@ -231,7 +235,8 @@ export default function TransactionEditForm({ transaction, onSuccess, onCancel }
                         value={formData.description}
                         onChange={handleChange}
                         placeholder="Brief description of the transaction"
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                        className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                     />
                 </div>
 
@@ -247,7 +252,8 @@ export default function TransactionEditForm({ transaction, onSuccess, onCancel }
                         onChange={handleChange}
                         rows={3}
                         placeholder="Additional notes or details"
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                        className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                     />
                 </div>
 
@@ -278,7 +284,9 @@ export default function TransactionEditForm({ transaction, onSuccess, onCancel }
                     <button
                         type="submit"
                         disabled={loading}
-                        className="flex-1 bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className={`flex-1 bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-700 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 
+                                   disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
                     >
                         {loading ? 'Updating...' : 'Update Transaction'}
                     </button>
@@ -287,7 +295,8 @@ export default function TransactionEditForm({ transaction, onSuccess, onCancel }
                         <button
                             type="button"
                             onClick={onCancel}
-                            className="px-4 py-2 border border-slate-300 text-slate-700 rounded-md hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors"
+                            className={`px-4 py-2 border border-slate-300 text-slate-700 rounded-md hover:bg-slate-50 
+                                       focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors`}
                         >
                             Cancel
                         </button>

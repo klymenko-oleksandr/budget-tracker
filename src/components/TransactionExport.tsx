@@ -8,7 +8,7 @@ interface TransactionExportProps {
     filters?: any;
 }
 
-export default function TransactionExport({ transactions, filters }: TransactionExportProps) {
+export default function TransactionExport({ transactions }: TransactionExportProps) {
     const [isExporting, setIsExporting] = useState(false);
 
     const formatCurrency = (amount: number) => {
@@ -152,7 +152,9 @@ export default function TransactionExport({ transactions, filters }: Transaction
                 <button
                     onClick={exportToCSV}
                     disabled={isExporting}
-                    className="flex-1 bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className={`flex-1 bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-700 
+                               focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 
+                               disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
                 >
                     {isExporting ? '📤 Exporting...' : '📤 Export to CSV'}
                 </button>

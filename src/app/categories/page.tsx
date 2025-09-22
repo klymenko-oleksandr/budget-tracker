@@ -7,7 +7,7 @@ import CategoryList from '@/components/CategoryList';
 import CategoryForm from '@/components/CategoryForm';
 
 export default function CategoriesPage() {
-    const { isSignedIn, user, isLoaded } = useUser();
+    const { isSignedIn, isLoaded } = useUser();
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [editingCategory, setEditingCategory] = useState<Category | null>(null);
     const [refreshTrigger, setRefreshTrigger] = useState(0);

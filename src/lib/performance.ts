@@ -41,12 +41,12 @@ export const logQueryPerformance = (queryName: string, startTime: number) => {
 
 // Component render performance monitoring
 export const useRenderPerformance = (componentName: string) => {
-    if (process.env.NODE_ENV === 'development') {
-        const renderStart = performance.now();
+    const renderStart = performance.now();
 
-        React.useEffect(() => {
+    React.useEffect(() => {
+        if (process.env.NODE_ENV === 'development') {
             const renderTime = performance.now() - renderStart;
             console.log(`⚛️ ${componentName} render: ${renderTime.toFixed(2)}ms`);
-        });
-    }
+        }
+    });
 };

@@ -10,7 +10,7 @@ import TransactionFilters, { FilterOptions } from '@/components/TransactionFilte
 import TransactionExport from '@/components/TransactionExport';
 
 export default function TransactionsPage() {
-    const { isSignedIn, user, isLoaded } = useUser();
+    const { isSignedIn, isLoaded } = useUser();
     const [showForm, setShowForm] = useState(false);
     const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
     const [refreshTrigger, setRefreshTrigger] = useState(0);

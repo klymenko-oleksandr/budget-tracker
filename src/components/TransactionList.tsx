@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { TransactionType } from '@prisma/client';
 import { Transaction } from '@/types';
 
@@ -26,11 +26,7 @@ export default function TransactionList({ refreshTrigger, onEditTransaction, fil
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        fetchTransactions();
-    }, [refreshTrigger, filters]);
-
-    const fetchTransactions = async () => {
+    const fetchTransactions = useCallback(async () => {
         try {
             setLoading(true);
             setError(null);
@@ -94,7 +90,11 @@ export default function TransactionList({ refreshTrigger, onEditTransaction, fil
         } finally {
             setLoading(false);
         }
-    };
+    }, [filters, onTransactionsChange]);
+
+    useEffect(() => {
+        fetchTransactions();
+    }, [refreshTrigger, fetchTransactions]);
 
     const handleDelete = async (transactionId: string) => {
         if (!confirm('Are you sure you want to delete this transaction?')) {
@@ -213,7 +213,8 @@ export default function TransactionList({ refreshTrigger, onEditTransaction, fil
                 {transactions.map((transaction) => (
                     <div
                         key={transaction.id}
-                        className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                        className={`flex items-center justify-between p-4 border border-slate-200 rounded-lg 
+                                   hover:bg-slate-50 transition-colors`}
                     >
                         <div className="flex items-center space-x-4">
                             <div className="text-2xl">{getTransactionTypeIcon(transaction.type)}</div>

@@ -146,7 +146,8 @@ export default function TransactionFilters({ onFiltersChange, onReset }: Transac
                             value={filters.search}
                             onChange={(e) => handleFilterChange('search', e.target.value)}
                             placeholder="Search transactions..."
-                            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                            className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                         />
                     </div>
 
@@ -155,7 +156,8 @@ export default function TransactionFilters({ onFiltersChange, onReset }: Transac
                         <select
                             value={filters.type}
                             onChange={(e) => handleFilterChange('type', e.target.value)}
-                            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                            className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                         >
                             <option value="ALL">All Types</option>
                             <option value="INCOME">💰 Income</option>
@@ -176,7 +178,8 @@ export default function TransactionFilters({ onFiltersChange, onReset }: Transac
                             <select
                                 value={filters.categoryId}
                                 onChange={(e) => handleFilterChange('categoryId', e.target.value)}
-                                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                                className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                             >
                                 <option value="">All Categories</option>
                                 {categories.map((category) => (
@@ -193,31 +196,36 @@ export default function TransactionFilters({ onFiltersChange, onReset }: Transac
                             <div className="flex flex-wrap gap-2">
                                 <button
                                     onClick={() => getQuickDateRange('today')}
-                                    className="bg-slate-100 text-slate-700 px-3 py-1 rounded-md hover:bg-slate-200 transition-colors text-sm"
+                                    className={`bg-slate-100 text-slate-700 px-3 py-1 rounded-md 
+                                               hover:bg-slate-200 transition-colors text-sm`}
                                 >
                                     Today
                                 </button>
                                 <button
                                     onClick={() => getQuickDateRange('week')}
-                                    className="bg-slate-100 text-slate-700 px-3 py-1 rounded-md hover:bg-slate-200 transition-colors text-sm"
+                                    className={`bg-slate-100 text-slate-700 px-3 py-1 rounded-md 
+                                               hover:bg-slate-200 transition-colors text-sm`}
                                 >
                                     Last 7 Days
                                 </button>
                                 <button
                                     onClick={() => getQuickDateRange('month')}
-                                    className="bg-slate-100 text-slate-700 px-3 py-1 rounded-md hover:bg-slate-200 transition-colors text-sm"
+                                    className={`bg-slate-100 text-slate-700 px-3 py-1 rounded-md 
+                                               hover:bg-slate-200 transition-colors text-sm`}
                                 >
                                     Last 30 Days
                                 </button>
                                 <button
                                     onClick={() => getQuickDateRange('quarter')}
-                                    className="bg-slate-100 text-slate-700 px-3 py-1 rounded-md hover:bg-slate-200 transition-colors text-sm"
+                                    className={`bg-slate-100 text-slate-700 px-3 py-1 rounded-md 
+                                               hover:bg-slate-200 transition-colors text-sm`}
                                 >
                                     Last 3 Months
                                 </button>
                                 <button
                                     onClick={() => getQuickDateRange('year')}
-                                    className="bg-slate-100 text-slate-700 px-3 py-1 rounded-md hover:bg-slate-200 transition-colors text-sm"
+                                    className={`bg-slate-100 text-slate-700 px-3 py-1 rounded-md 
+                                               hover:bg-slate-200 transition-colors text-sm`}
                                 >
                                     Last Year
                                 </button>
@@ -232,7 +240,8 @@ export default function TransactionFilters({ onFiltersChange, onReset }: Transac
                                     type="date"
                                     value={filters.startDate}
                                     onChange={(e) => handleFilterChange('startDate', e.target.value)}
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                                    className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                                 />
                             </div>
 
@@ -242,7 +251,8 @@ export default function TransactionFilters({ onFiltersChange, onReset }: Transac
                                     type="date"
                                     value={filters.endDate}
                                     onChange={(e) => handleFilterChange('endDate', e.target.value)}
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                                    className={`w-full px-3 py-2 border border-slate-300 rounded-md 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                                 />
                             </div>
                         </div>
@@ -260,7 +270,8 @@ export default function TransactionFilters({ onFiltersChange, onReset }: Transac
                                         step="0.01"
                                         min="0"
                                         placeholder="0.00"
-                                        className="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                                        className={`w-full pl-8 pr-3 py-2 border border-slate-300 rounded-md 
+                                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                                     />
                                 </div>
                             </div>
@@ -276,7 +287,8 @@ export default function TransactionFilters({ onFiltersChange, onReset }: Transac
                                         step="0.01"
                                         min="0"
                                         placeholder="0.00"
-                                        className="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                                        className={`w-full pl-8 pr-3 py-2 border border-slate-300 rounded-md 
+                                                   focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-500`}
                                     />
                                 </div>
                             </div>
@@ -292,7 +304,9 @@ export default function TransactionFilters({ onFiltersChange, onReset }: Transac
                         <span className="font-medium">Active filters:</span>
                         <div className="flex flex-wrap gap-2 mt-2">
                             {filters.search && (
-                                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Search: "{filters.search}"</span>
+                                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+                                    Search: &quot;{filters.search}&quot;
+                                </span>
                             )}
                             {filters.type !== 'ALL' && (
                                 <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Type: {filters.type}</span>
