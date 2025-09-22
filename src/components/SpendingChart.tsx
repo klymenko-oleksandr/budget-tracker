@@ -1,8 +1,9 @@
 'use client';
 
 import React, { memo } from 'react';
-import { PieChart, Pie, PieLabel, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, PieLabel, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useSpendingData } from '@/hooks/useDashboardData';
+import { TimeRanges } from '@/types/time-range.model';
 
 interface SpendingData {
     categoryId: string;
@@ -31,10 +32,10 @@ type TickFormatterValue = string | number;
 interface SpendingChartProps {
     refreshTrigger?: number;
     chartType?: 'pie' | 'bar';
-    timeRange?: 'week' | 'month' | 'quarter' | 'year';
+    timeRange?: TimeRanges;
 }
 
-function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = 'month' }: SpendingChartProps) {
+function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = TimeRanges.month }: SpendingChartProps) {
     const { data, totalSpending, isLoading: loading, error, refetch } = useSpendingData(timeRange);
 
     // Trigger refetch when refreshTrigger changes
@@ -53,13 +54,13 @@ function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = 'month' 
 
     const getTimeRangeLabel = () => {
         switch (timeRange) {
-            case 'week':
+            case TimeRanges.week:
                 return 'Last 7 Days';
-            case 'month':
+            case TimeRanges.month:
                 return 'Last 30 Days';
-            case 'quarter':
+            case TimeRanges.quarter:
                 return 'Last 3 Months';
-            case 'year':
+            case TimeRanges.year:
                 return 'Last 12 Months';
             default:
                 return 'Last 30 Days';
@@ -99,8 +100,12 @@ function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = 'month' 
         return null;
     };
 
-    const pieLabel: PieLabel = (({ categoryName, percent }: PieLabelProps) =>
-        `${categoryName} ${(percent * 100).toFixed(0)}%`) as unknown as PieLabel;
+    // @Todo: fix this type error
+    const pieLabel: PieLabel = ({ categoryName, percent }: PieLabelProps) => {
+        if (percent === 0) return '';
+
+        return `${categoryName} ${(percent * 100).toFixed(0)}%` as unknown as PieLabel;
+    };
 
     if (loading) {
         return (

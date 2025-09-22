@@ -4,11 +4,13 @@ import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import BudgetOverview from '@/components/BudgetOverview';
 import SpendingChart from '@/components/SpendingChart';
+import { TimeRanges } from '@/types/time-range.model';
+import { cn } from '@/lib/utils';
 
 export default function DashboardPage() {
     const { isSignedIn, user, isLoaded } = useUser();
     const [chartType, setChartType] = useState<'pie' | 'bar'>('pie');
-    const [timeRange, setTimeRange] = useState<'week' | 'month' | 'quarter' | 'year'>('month');
+    const [timeRange, setTimeRange] = useState<TimeRanges>(TimeRanges.month);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
 
     if (!isLoaded) {
@@ -37,7 +39,7 @@ export default function DashboardPage() {
         <div className="p-10 max-w-7xl mx-auto">
             <div className="mb-8">
                 <h1 className="text-3xl font-bold mb-2">Welcome back, {user.firstName}! 👋</h1>
-                <p className="text-slate-600">Here's your financial overview and spending analytics</p>
+                <p className="text-slate-600">Here&apos;s your financial overview and spending analytics</p>
             </div>
 
             <div className="space-y-6">
@@ -55,8 +57,13 @@ export default function DashboardPage() {
                                 <label className="text-sm font-medium text-slate-700">Time Range:</label>
                                 <select
                                     value={timeRange}
-                                    onChange={(e) => setTimeRange(e.target.value as 'week' | 'month' | 'quarter' | 'year')}
-                                    className="px-3 py-1 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-500"
+                                    onChange={(e) => setTimeRange(e.target.value as TimeRanges)}
+                                    className={cn(
+                                        'px-3 py-1',
+                                        'border border-slate-300 rounded-md',
+                                        'text-sm',
+                                        'focus:outline-none focus:ring-2 focus:ring-slate-500'
+                                    )}
                                 >
                                     <option value="week">Last 7 Days</option>
                                     <option value="month">Last 30 Days</option>

@@ -1,10 +1,11 @@
 'use client';
 
 import { memo } from 'react';
-import { useDashboardData } from '@/hooks/useDashboardData';
+import { useDashboardQuery } from '@/queries/dashboard.queries';
+import { TimeRanges } from '@/types/time-range.model';
 
 function BudgetOverview() {
-    const { data, isLoading: loading, error, refetch } = useDashboardData('month');
+    const { data, isLoading: loading, error, refetch } = useDashboardQuery(TimeRanges.month);
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('en-US', {
