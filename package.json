@@ -1,60 +1,60 @@
 {
-  "name": "budget-tracker",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "prepare": "husky install",
-    "type-check": "tsc --noEmit",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "lint:check": "eslint . --report-unused-disable-directives"
-  },
-  "dependencies": {
-    "@clerk/nextjs": "^6.32.0",
-    "@prisma/client": "^6.16.1",
-    "@tanstack/react-query": "^5.89.0",
-    "@tanstack/react-query-devtools": "^5.89.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.544.0",
-    "next": "15.5.3",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "recharts": "^3.2.1",
-    "tailwind-merge": "^3.3.1"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@eslint/js": "^9.36.0",
-    "@tailwindcss/postcss": "^4",
-    "@tanstack/eslint-plugin-query": "^5.90.1",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@typescript-eslint/eslint-plugin": "^8.44.0",
-    "@typescript-eslint/parser": "^8.44.0",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.3",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.0",
-    "prettier": "^3.6.2",
-    "prisma": "^6.16.1",
-    "tailwindcss": "^4",
-    "tw-animate-css": "^1.3.8",
-    "typescript": "^5"
-  },
-  "lint-staged": {
-    "!(**/*.{ts,tsx})": "prettier --write --ignore-unknown",
-    "**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
-  }
+    "name": "budget-tracker",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "prepare": "husky",
+        "type-check": "tsc --noEmit",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "lint:check": "eslint . --report-unused-disable-directives"
+    },
+    "dependencies": {
+        "@clerk/nextjs": "^6.32.0",
+        "@prisma/client": "^6.16.1",
+        "@tanstack/react-query": "^5.89.0",
+        "@tanstack/react-query-devtools": "^5.89.0",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
+        "lucide-react": "^0.544.0",
+        "next": "15.5.3",
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "recharts": "^3.2.1",
+        "tailwind-merge": "^3.3.1"
+    },
+    "devDependencies": {
+        "@eslint/eslintrc": "^3",
+        "@eslint/js": "^9.36.0",
+        "@tailwindcss/postcss": "^4",
+        "@tanstack/eslint-plugin-query": "^5.90.1",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "@typescript-eslint/eslint-plugin": "^8.44.0",
+        "@typescript-eslint/parser": "^8.44.0",
+        "eslint": "^9",
+        "eslint-config-next": "15.5.3",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.4",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "eslint-plugin-react-refresh": "^0.4.20",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.0",
+        "prettier": "^3.6.2",
+        "prisma": "^6.16.1",
+        "tailwindcss": "^4",
+        "tw-animate-css": "^1.3.8",
+        "typescript": "^5"
+    },
+    "lint-staged": {
+        "!(**/*.{ts,tsx})": "prettier --write --ignore-unknown",
+        "**/*.{ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ]
+    }
 }
