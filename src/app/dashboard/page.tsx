@@ -65,10 +65,10 @@ export default function DashboardPage() {
                                         'focus:outline-none focus:ring-2 focus:ring-slate-500'
                                     )}
                                 >
-                                    <option value="week">Last 7 Days</option>
-                                    <option value="month">Last 30 Days</option>
-                                    <option value="quarter">Last 3 Months</option>
-                                    <option value="year">Last 12 Months</option>
+                                    <option value={TimeRanges.week}>Last 7 Days</option>
+                                    <option value={TimeRanges.month}>Last 30 Days</option>
+                                    <option value={TimeRanges.quarter}>Last 3 Months</option>
+                                    <option value={TimeRanges.year}>Last 12 Months</option>
                                 </select>
                             </div>
 
