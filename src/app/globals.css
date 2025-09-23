@@ -1,13 +1,62 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* e-Ukraine Font Faces */
+@font-face {
+    font-family: 'e-Ukraine';
+    src: url('/fonts/e-Ukraine/e-Ukraine-Thin.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'e-Ukraine';
+    src: url('/fonts/e-Ukraine/e-Ukraine-UltraLight.otf') format('opentype');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'e-Ukraine';
+    src: url('/fonts/e-Ukraine/e-Ukraine-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'e-Ukraine';
+    src: url('/fonts/e-Ukraine/e-Ukraine-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'e-Ukraine';
+    src: url('/fonts/e-Ukraine/e-Ukraine-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'e-Ukraine';
+    src: url('/fonts/e-Ukraine/e-Ukraine-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
-    --font-sans: var(--font-geist-sans, sans-serif); /* definition in layout.tsx */
-    --font-mono: var(--font-geist-mono, monospace); /* definition in layout.tsx */
+    --font-sans: 'e-Ukraine', sans-serif;
+    --font-mono: 'e-Ukraine', monospace;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -118,5 +167,128 @@
     }
     body {
         @apply bg-background text-foreground;
+    }
+}
+
+/* e-Ukraine Typography Classes */
+@layer utilities {
+    /* Desktop Typography */
+    .text-h1 {
+        font-size: 56px;
+        line-height: 120%;
+        font-weight: 400;
+    }
+
+    .text-h2 {
+        font-size: 48px;
+        line-height: 120%;
+        font-weight: 400;
+    }
+
+    .text-h3 {
+        font-size: 40px;
+        line-height: 120%;
+        font-weight: 400;
+    }
+
+    .text-h4 {
+        font-size: 36px;
+        line-height: 120%;
+        font-weight: 400;
+    }
+
+    .text-h5 {
+        font-size: 32px;
+        line-height: 120%;
+        font-weight: 400;
+    }
+
+    .text-h6 {
+        font-size: 24px;
+        line-height: 130%;
+        font-weight: 400;
+    }
+
+    .text-h7 {
+        font-size: 20px;
+        line-height: 130%;
+        font-weight: 400;
+    }
+
+    .text-body {
+        font-size: 18px;
+        line-height: 150%;
+        font-weight: 400;
+    }
+
+    .text-body-2 {
+        font-size: 16px;
+        line-height: 150%;
+        font-weight: 400;
+    }
+
+    .text-small {
+        font-size: 14px;
+        line-height: 150%;
+        font-weight: 400;
+    }
+
+    .text-tiny {
+        font-size: 13px;
+        line-height: 120%;
+        font-weight: 400;
+    }
+
+    /* Mobile Typography (responsive) */
+    @media (max-width: 768px) {
+        .text-h1 {
+            font-size: 36px;
+            line-height: 120%;
+        }
+
+        .text-h2 {
+            font-size: 32px;
+            line-height: 120%;
+        }
+
+        .text-h3 {
+            font-size: 28px;
+            line-height: 120%;
+        }
+
+        .text-h4 {
+            font-size: 24px;
+            line-height: 120%;
+        }
+
+        .text-h5 {
+            font-size: 24px;
+            line-height: 120%;
+        }
+
+        .text-h6 {
+            font-size: 20px;
+            line-height: 130%;
+        }
+
+        .text-h7 {
+            font-size: 18px;
+            line-height: 130%;
+        }
+
+        .text-body {
+            font-size: 16px;
+            line-height: 120%;
+        }
+
+        .text-body-2 {
+            font-size: 16px;
+            line-height: 150%;
+        }
+
+        .text-small {
+            font-size: 14px;
+            line-height: 150%;
+        }
     }
 }
