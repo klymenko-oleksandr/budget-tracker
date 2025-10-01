@@ -25,6 +25,11 @@ async function fetchDashboardData(timeRange?: TimeRanges): Promise<DashboardData
             case TimeRanges.month:
                 startDate.setMonth(now.getMonth() - 1);
                 break;
+            case TimeRanges.currentMonth:
+                // Start from the 1st of the current month
+                startDate.setDate(1);
+                startDate.setHours(0, 0, 0, 0);
+                break;
             case TimeRanges.quarter:
                 startDate.setMonth(now.getMonth() - 3);
                 break;

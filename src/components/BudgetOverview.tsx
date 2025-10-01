@@ -6,7 +6,7 @@ import { TimeRanges } from '@/types/time-range.model';
 import { formatCostNumber } from '@/lib/utils';
 
 function BudgetOverview() {
-    const { data, isLoading: loading, error, refetch } = useDashboardQuery(TimeRanges.month);
+    const { data, isLoading: loading, error, refetch } = useDashboardQuery(TimeRanges.currentMonth);
 
     // percentage: 0 - 100
     const ProgressBar = ({ percentage, color, isOverBudget }: { percentage: number; color: string; isOverBudget: boolean }) => (
@@ -115,7 +115,7 @@ function BudgetOverview() {
 
             {/* Budget Progress by Category */}
             <div>
-                <h2 className="text-xl font-semibold mb-4 text-slate-800">Budget Progress by Category</h2>
+                <h2 className="text-xl font-semibold mb-4 text-slate-800">Budget Progress by Category (This Month)</h2>
 
                 {data.categoryAnalytics.length === 0 ? (
                     <div className="text-center py-8 text-slate-500">
