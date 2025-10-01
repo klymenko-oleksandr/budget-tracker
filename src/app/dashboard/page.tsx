@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { useState } from 'react';
 import BudgetOverview from '@/components/BudgetOverview';
 import SpendingChart from '@/components/SpendingChart';
 import { TimeRanges } from '@/types/time-range.model';
 import { cn } from '@/lib/utils';
 
-export default function DashboardPage() {
+export default function Page() {
     const { isSignedIn, user, isLoaded } = useUser();
     const [chartType, setChartType] = useState<'pie' | 'bar'>('pie');
     const [timeRange, setTimeRange] = useState<TimeRanges>(TimeRanges.month);
@@ -36,18 +36,17 @@ export default function DashboardPage() {
     }
 
     return (
-        <div className="p-10 max-w-7xl mx-auto">
-            <div className="mb-8">
+        <>
+            <div>
                 <h1 className="text-3xl font-bold mb-2">Welcome back, {user.firstName}! 👋</h1>
                 <p className="text-slate-600">Here&apos;s your financial overview and spending analytics</p>
             </div>
-
             <div className="space-y-6">
                 {/* Budget Overview */}
                 <BudgetOverview />
 
                 {/* Chart Controls */}
-                <div className="bg-white p-4 rounded-lg shadow-md border">
+                <div className="bg-white p-4 rounded-lg border">
                     <div className="flex flex-wrap justify-between items-center gap-4">
                         <h2 className="text-lg font-semibold text-slate-800">📈 Spending Analytics</h2>
 
@@ -109,6 +108,6 @@ export default function DashboardPage() {
                 {/* Spending Chart */}
                 <SpendingChart refreshTrigger={refreshTrigger} chartType={chartType} timeRange={timeRange} />
             </div>
-        </div>
+        </>
     );
 }

@@ -64,7 +64,7 @@ export default function TransactionsPage() {
     }
 
     return (
-        <div className="p-10 max-w-6xl mx-auto">
+        <div className="p-10">
             <div className="mb-8">
                 <h1 className="text-3xl font-bold mb-2">Transactions 💳</h1>
                 <p className="text-slate-600">Track and manage all your income and expenses</p>

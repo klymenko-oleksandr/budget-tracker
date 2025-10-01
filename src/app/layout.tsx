@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from 'next';
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { ClerkProvider } from '@clerk/nextjs';
-import Navbar from '@/components/Navbar';
 import QueryProvider from '@/providers/QueryProvider';
 import './globals.css';
+import { AppSidebar } from '@/components/app-sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { SiteHeader } from '@/components/site-header';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
@@ -31,8 +33,24 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
             <html lang="en">
                 <body className="font-sans antialiased min-h-screen bg-slate-50 text-slate-900">
                     <QueryProvider>
-                        <Navbar />
-                        <main>{children}</main>
+                        <SidebarProvider
+                            style={
+                                {
+                                    '--sidebar-width': 'calc(var(--spacing) * 72)',
+                                    '--header-height': 'calc(var(--spacing) * 12)',
+                                } as CSSProperties
+                            }
+                        >
+                            <AppSidebar variant="inset" />
+                            <SidebarInset>
+                                <SiteHeader />
+                                <div className="flex flex-1 flex-col">
+                                    <div className="@container/main flex flex-1 flex-col gap-2">
+                                        <main className="flex flex-col gap-4 p-4 md:gap-6 md:p-6">{children}</main>
+                                    </div>
+                                </div>
+                            </SidebarInset>
+                        </SidebarProvider>
                     </QueryProvider>
                 </body>
             </html>

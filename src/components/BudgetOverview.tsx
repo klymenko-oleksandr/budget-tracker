@@ -3,17 +3,12 @@
 import { memo } from 'react';
 import { useDashboardQuery } from '@/queries/dashboard.queries';
 import { TimeRanges } from '@/types/time-range.model';
+import { formatCostNumber } from '@/lib/utils';
 
 function BudgetOverview() {
     const { data, isLoading: loading, error, refetch } = useDashboardQuery(TimeRanges.month);
 
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        }).format(amount);
-    };
-
+    // percentage: 0 - 100
     const ProgressBar = ({ percentage, color, isOverBudget }: { percentage: number; color: string; isOverBudget: boolean }) => (
         <div className="w-full bg-slate-200 rounded-full h-2">
             <div
@@ -54,7 +49,7 @@ function BudgetOverview() {
         return (
             <div className="bg-white p-6 rounded-lg shadow-md border">
                 <div className="text-center py-8">
-                    <p className="text-red-600 mb-4">❌ {error instanceof Error ? error.message : 'Failed to fetch dashboard data'}</p>
+                    <p className="text-red-600 mb-4">❌ {error?.message || 'Failed to fetch dashboard data'}</p>
                     <button
                         onClick={() => refetch()}
                         className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors"
@@ -74,44 +69,44 @@ function BudgetOverview() {
         <div className="space-y-6">
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="bg-white p-6 rounded-lg shadow-md border">
+                <div className="bg-white p-6 rounded-lg border">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm font-medium text-slate-600">Total Income</p>
-                            <p className="text-2xl font-bold text-green-600">{formatCurrency(data.summary.totalIncome)}</p>
+                            <p className="text-2xl font-bold text-green-600">{formatCostNumber(data.summary.totalIncome)}</p>
                         </div>
                         <div className="text-3xl">💰</div>
                     </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-md border">
+                <div className="bg-white p-6 rounded-lg border">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm font-medium text-slate-600">Total Expenses</p>
-                            <p className="text-2xl font-bold text-red-600">{formatCurrency(data.summary.totalExpenses)}</p>
+                            <p className="text-2xl font-bold text-red-600">{formatCostNumber(data.summary.totalExpenses)}</p>
                         </div>
                         <div className="text-3xl">💸</div>
                     </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-md border">
+                <div className="bg-white p-6 rounded-lg border">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm font-medium text-slate-600">Net Income</p>
                             <p className={`text-2xl font-bold ${data.summary.netIncome >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                {formatCurrency(data.summary.netIncome)}
+                                {formatCostNumber(data.summary.netIncome)}
                             </p>
                         </div>
                         <div className="text-3xl">{data.summary.netIncome >= 0 ? '📈' : '📉'}</div>
                     </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-md border">
+                <div className="bg-white p-6 rounded-lg border">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm font-medium text-slate-600">Budget Used</p>
                             <p className="text-2xl font-bold text-slate-800">{data.summary.totalBudgetUsed.toFixed(1)}%</p>
-                            <p className="text-sm text-slate-500">{formatCurrency(data.summary.budgetRemaining)} left</p>
+                            <p className="text-sm text-slate-500">{formatCostNumber(data.summary.budgetRemaining)} left</p>
                         </div>
                         <div className="text-3xl">🎯</div>
                     </div>
@@ -119,7 +114,7 @@ function BudgetOverview() {
             </div>
 
             {/* Budget Progress by Category */}
-            <div className="bg-white p-6 rounded-lg shadow-md border">
+            <div>
                 <h2 className="text-xl font-semibold mb-4 text-slate-800">Budget Progress by Category</h2>
 
                 {data.categoryAnalytics.length === 0 ? (
@@ -141,9 +136,9 @@ function BudgetOverview() {
                                     </div>
                                     <div className="text-right">
                                         <div className="font-semibold text-slate-800">
-                                            {formatCurrency(category.spent)} / {formatCurrency(category.budget)}
+                                            {formatCostNumber(category.spent)} / {formatCostNumber(category.budget)}
                                         </div>
-                                        <div className="text-sm text-slate-500">{formatCurrency(category.remaining)} remaining</div>
+                                        <div className="text-sm text-slate-500">{formatCostNumber(category.remaining)} remaining</div>
                                     </div>
                                 </div>
 
@@ -160,7 +155,7 @@ function BudgetOverview() {
 
             {/* Recent Transactions */}
             {data.recentTransactions.length > 0 && (
-                <div className="bg-white p-6 rounded-lg shadow-md border">
+                <div>
                     <h2 className="text-xl font-semibold mb-4 text-slate-800">Recent Transactions</h2>
                     <div className="space-y-3">
                         {data.recentTransactions.slice(0, 5).map((transaction) => (
@@ -184,7 +179,7 @@ function BudgetOverview() {
                                 </div>
                                 <div className={`font-semibold ${transaction.type === 'INCOME' ? 'text-green-600' : 'text-red-600'}`}>
                                     {transaction.type === 'INCOME' ? '+' : '-'}
-                                    {formatCurrency(transaction.amount)}
+                                    {formatCostNumber(transaction.amount)}
                                 </div>
                             </div>
                         ))}

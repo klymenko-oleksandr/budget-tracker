@@ -12,6 +12,7 @@ DATABASE_URL="postgresql://postgres.lkxyvdmkrrhjkedtrlqn:YOUR_PASSWORD@aws-1-eu-
 ```
 
 **Key parameters:**
+
 - `pgbouncer=true` - Tells Prisma it's using a connection pooler
 - `connection_limit=1` - Limits connections to avoid conflicts
 - `pool_timeout=0` - Prevents timeout issues

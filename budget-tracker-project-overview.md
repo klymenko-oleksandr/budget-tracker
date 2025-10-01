@@ -1,7 +1,9 @@
 # 🧾 Project Intro: Budget Tracker App (with Monobank & Brokers)
 
 ## 🎯 Project Goal
+
 Build a full-featured **budget tracker app** with:
+
 - Monobank integration
 - Custom budgets per category
 - Manual/CSV upload from brokers (IBKR, Freedom Finance)
@@ -14,21 +16,22 @@ Build a full-featured **budget tracker app** with:
 
 ## 🛠️ Tech Stack
 
-| Layer        | Tech                                |
-|--------------|-------------------------------------|
-| Frontend     | **Next.js (App Router)** + TypeScript |
-| Styling      | Tailwind CSS + shadcn/ui (`slate`)  |
-| Auth         | Clerk (`@clerk/nextjs`)             |
-| Backend API  | Next.js API routes (for now)        |
-| ORM / DB     | Prisma + PostgreSQL                 |
-| Charts       | **Recharts** (✅ implemented)        |
-| Hosting      | Vercel (planned)                    |
+| Layer       | Tech                                  |
+| ----------- | ------------------------------------- |
+| Frontend    | **Next.js (App Router)** + TypeScript |
+| Styling     | Tailwind CSS + shadcn/ui (`slate`)    |
+| Auth        | Clerk (`@clerk/nextjs`)               |
+| Backend API | Next.js API routes (for now)          |
+| ORM / DB    | Prisma + PostgreSQL                   |
+| Charts      | **Recharts** (✅ implemented)         |
+| Hosting     | Vercel (planned)                      |
 
 ---
 
 ## 🚀 Current Features & Capabilities (Phase 2 Complete)
 
 ### 📊 **Advanced Data Visualization**
+
 - **Interactive Pie Charts** - Category spending breakdown with hover tooltips
 - **Dynamic Bar Charts** - Budget vs actual spending comparison
 - **Time Range Analysis** - Weekly, monthly, quarterly, and yearly views
@@ -36,6 +39,7 @@ Build a full-featured **budget tracker app** with:
 - **Professional Tooltips** - Detailed spending information on hover
 
 ### 🔍 **Advanced Filtering & Search**
+
 - **Multi-criteria Filtering** - Filter by date range, category, transaction type
 - **Smart Search** - Search across transaction descriptions, notes, and categories
 - **Time Range Presets** - Quick filters for common time periods
@@ -43,6 +47,7 @@ Build a full-featured **budget tracker app** with:
 - **Type-based Filtering** - Separate income, expenses, transfers, etc.
 
 ### 📈 **Budget Management**
+
 - **Category Budgets** - Set monthly budgets for each spending category
 - **Progress Tracking** - Visual progress bars showing budget utilization
 - **Budget Alerts** - Visual indicators for over-budget categories
@@ -50,6 +55,7 @@ Build a full-featured **budget tracker app** with:
 - **Budget vs Actual** - Side-by-side comparison charts
 
 ### 💾 **Data Management**
+
 - **Full CRUD Operations** - Create, read, update, delete transactions and categories
 - **CSV Export** - Export filtered transactions with summary statistics
 - **Data Validation** - Comprehensive form validation and error handling
@@ -57,6 +63,7 @@ Build a full-featured **budget tracker app** with:
 - **Transaction History** - Complete audit trail of all financial activities
 
 ### 🎨 **User Experience**
+
 - **Modern UI Design** - Clean, professional interface with Tailwind CSS
 - **Responsive Layout** - Works perfectly on desktop, tablet, and mobile
 - **Intuitive Navigation** - Easy-to-use dashboard and transaction management
@@ -64,6 +71,7 @@ Build a full-featured **budget tracker app** with:
 - **Smart Defaults** - 10 pre-configured categories for immediate use
 
 ### 🔧 **Technical Excellence**
+
 - **Complete TypeScript Coverage** - 100% type-safe codebase
 - **Enterprise-grade Architecture** - Scalable component design
 - **Optimized Performance** - Memoized components and efficient re-renders
@@ -75,12 +83,13 @@ Build a full-featured **budget tracker app** with:
 ## ✅ Phase 1 – Core App Setup (100% COMPLETE)
 
 ### ✅ DONE
+
 - Initialized Next.js app with TypeScript, Tailwind
 - Installed `@clerk/nextjs`
 - Configured Clerk with middleware
 - Set up `.env` with:
-  - `NEXT_PUBLIC_CLERK_FRONTEND_API`
-  - `CLERK_SECRET_KEY`
+    - `NEXT_PUBLIC_CLERK_FRONTEND_API`
+    - `CLERK_SECRET_KEY`
 - Created `middleware.ts` with `clerkMiddleware`
 - Chose `slate` as base Tailwind color
 - Added navigation UI inside `app/page.tsx` with Clerk-based auth state
@@ -90,23 +99,24 @@ Build a full-featured **budget tracker app** with:
     - `/transactions`
     - `/categories`
 - **✅ Created comprehensive Prisma schema:**
-  - `User` model with `clerkId` integration
-  - `Transaction` model with currency support
-  - `Category` model with budget tracking
-  - `Account` model for multiple account types
-  - Proper relationships and indexes
+    - `User` model with `clerkId` integration
+    - `Transaction` model with currency support
+    - `Category` model with budget tracking
+    - `Account` model for multiple account types
+    - Proper relationships and indexes
 - **✅ Set up Prisma Client** (`/src/lib/prisma.ts`)
 - **✅ Generated Prisma Client** (synced with schema)
 - **✅ Created Clerk-Prisma integration utilities** (`/src/lib/user.ts`):
-  - `getOrCreateUser()` - Auto-creates DB users from Clerk
-  - `getCurrentUser()` - Safe user retrieval
-  - `requireUser()` - For protected operations
+    - `getOrCreateUser()` - Auto-creates DB users from Clerk
+    - `getCurrentUser()` - Safe user retrieval
+    - `requireUser()` - For protected operations
 - **✅ Built default categories system** (`/src/lib/default-categories.ts`):
-  - 10 predefined categories with budgets, colors, icons
-  - Auto-creation for new users
+    - 10 predefined categories with budgets, colors, icons
+    - Auto-creation for new users
 - **✅ Added database testing utilities** (`/src/lib/db-test.ts`)
 
 ### ✅ COMPLETED (Phase 1 Final Steps)
+
 - **✅ Created database schema** via manual SQL execution in Supabase
 - **✅ Generated Prisma Client** and verified compatibility
 - **✅ Tested full database functionality** - All tables accessible
@@ -118,91 +128,91 @@ Build a full-featured **budget tracker app** with:
 
 \`\`\`prisma
 model User {
-  id           String        @id @default(cuid())
-  clerkId      String        @unique // Clerk user ID for authentication
-  email        String        @unique
-  name         String?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  transactions Transaction[]
-  accounts     Account[]
-  categories   Category[]
+id String @id @default(cuid())
+clerkId String @unique // Clerk user ID for authentication
+email String @unique
+name String?
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+transactions Transaction[]
+accounts Account[]
+categories Category[]
 }
 
 model Transaction {
-  id          String          @id @default(cuid())
-  type        TransactionType
-  amount      Float
-  currency    String          @default("USD") // USD, UAH, EUR, etc.
-  date        DateTime
-  description String?
-  note        String?
-  category    Category?       @relation(fields: [categoryId], references: [id])
-  categoryId  String?
-  account     Account?        @relation(fields: [accountId], references: [id])
-  accountId   String?
-  user        User            @relation(fields: [userId], references: [id])
-  userId      String
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+id String @id @default(cuid())
+type TransactionType
+amount Float
+currency String @default("USD") // USD, UAH, EUR, etc.
+date DateTime
+description String?
+note String?
+category Category? @relation(fields: [categoryId], references: [id])
+categoryId String?
+account Account? @relation(fields: [accountId], references: [id])
+accountId String?
+user User @relation(fields: [userId], references: [id])
+userId String
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
 
-  @@index([userId])
-  @@index([date])
-  @@index([categoryId])
+@@index([userId])
+@@index([date])
+@@index([categoryId])
 }
 
 model Category {
-  id           String        @id @default(cuid())
-  name         String
-  description  String?
-  color        String?       // Hex color for UI display
-  icon         String?       // Icon identifier for UI
-  budget       Float?        // Monthly budget for this category
-  user         User          @relation(fields: [userId], references: [id])
-  userId       String
-  transactions Transaction[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+id String @id @default(cuid())
+name String
+description String?
+color String? // Hex color for UI display
+icon String? // Icon identifier for UI
+budget Float? // Monthly budget for this category
+user User @relation(fields: [userId], references: [id])
+userId String
+transactions Transaction[]
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
 
-  @@unique([name, userId]) // Unique category names per user
-  @@index([userId])
+@@unique([name, userId]) // Unique category names per user
+@@index([userId])
 }
 
 model Account {
-  id           String        @id @default(cuid())
-  name         String
-  type         AccountType   @default(manual)
-  currency     String        @default("USD")
-  balance      Float         @default(0)
-  isActive     Boolean       @default(true)
-  // Integration specific fields
-  apiToken     String?       // For Monobank, Binance, etc.
-  apiSecret    String?       // Encrypted API secrets
-  lastSyncAt   DateTime?
-  user         User          @relation(fields: [userId], references: [id])
-  userId       String
-  transactions Transaction[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+id String @id @default(cuid())
+name String
+type AccountType @default(manual)
+currency String @default("USD")
+balance Float @default(0)
+isActive Boolean @default(true)
+// Integration specific fields
+apiToken String? // For Monobank, Binance, etc.
+apiSecret String? // Encrypted API secrets
+lastSyncAt DateTime?
+user User @relation(fields: [userId], references: [id])
+userId String
+transactions Transaction[]
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
 
-  @@index([userId])
+@@index([userId])
 }
 
 enum TransactionType {
-  INCOME
-  EXPENSE
-  TRANSFER
-  INVESTMENT
-  REFUND
+INCOME
+EXPENSE
+TRANSFER
+INVESTMENT
+REFUND
 }
 
 enum AccountType {
-  manual      // Manually added transactions
-  monobank    // Monobank integration
-  binance     // Binance integration
-  broker      // IBKR, Freedom Finance CSV uploads
-  crypto      // Other crypto exchanges
-  bank        // Other bank integrations
+manual // Manually added transactions
+monobank // Monobank integration
+binance // Binance integration
+broker // IBKR, Freedom Finance CSV uploads
+crypto // Other crypto exchanges
+bank // Other bank integrations
 }
 \`\`\`
 
@@ -211,6 +221,7 @@ enum AccountType {
 ## 📊 Roadmap Phases
 
 ### Phase 1: App + Auth + DB (✅ 100% COMPLETE)
+
 - ✅ Auth, UI shell, nav, Clerk integration
 - ✅ Basic layout and routing
 - ✅ Comprehensive DB schema with Clerk integration
@@ -222,6 +233,7 @@ enum AccountType {
 - ✅ Full database functionality verified and tested
 
 ### Phase 2: Budgets + Manual Transaction Input (✅ 100% COMPLETE)
+
 - ✅ Monthly budgets per category with visual progress tracking
 - ✅ Full CRUD operations for transactions (add/edit/delete)
 - ✅ Comprehensive category management with custom budgets, colors, and icons
@@ -238,53 +250,57 @@ enum AccountType {
 ### Phase 3: Performance Optimization & Production Deployment (🚧 IN PROGRESS)
 
 #### 🚀 **Performance Optimization**
+
 - **Fix Duplicate API Requests**
-  - Eliminate duplicate GET requests to `/dashboard` and `/categories`
-  - Implement proper request deduplication and caching
-  - Optimize React component re-renders and data fetching
+    - Eliminate duplicate GET requests to `/dashboard` and `/categories`
+    - Implement proper request deduplication and caching
+    - Optimize React component re-renders and data fetching
 - **Reduce Response Times**
-  - Target: Reduce all API responses from >2s to <1s
-  - Database query optimization and indexing
-  - Implement proper caching strategies (Redis/memory cache)
-  - API route optimization and connection pooling
+    - Target: Reduce all API responses from >2s to <1s
+    - Database query optimization and indexing
+    - Implement proper caching strategies (Redis/memory cache)
+    - API route optimization and connection pooling
 - **Frontend Performance**
-  - Implement React.memo for expensive components
-  - Add proper loading states and skeleton screens
-  - Optimize bundle size and code splitting
-  - Implement service worker for offline capabilities
+    - Implement React.memo for expensive components
+    - Add proper loading states and skeleton screens
+    - Optimize bundle size and code splitting
+    - Implement service worker for offline capabilities
 
 #### 🌐 **Production Deployment Setup**
+
 - **Hosting Platform Configuration**
-  - Set up Vercel deployment with proper environment variables
-  - Configure custom domain and SSL certificates
-  - Set up production database (Supabase/PlanetScale)
-  - Configure CDN and static asset optimization
+    - Set up Vercel deployment with proper environment variables
+    - Configure custom domain and SSL certificates
+    - Set up production database (Supabase/PlanetScale)
+    - Configure CDN and static asset optimization
 - **Environment Management**
-  - Production environment variables setup
-  - Database migration and seeding for production
-  - Security configurations and API rate limiting
-  - Monitoring and logging setup (Vercel Analytics/Sentry)
+    - Production environment variables setup
+    - Database migration and seeding for production
+    - Security configurations and API rate limiting
+    - Monitoring and logging setup (Vercel Analytics/Sentry)
 
 #### 🔄 **CI/CD Pipeline Implementation**
+
 - **GitHub Actions Workflow**
-  - Automated pipeline triggered on push to main branch
-  - Multi-stage pipeline with proper error handling
+    - Automated pipeline triggered on push to main branch
+    - Multi-stage pipeline with proper error handling
 - **Code Quality Gates**
-  - **ESLint** - Code linting and style enforcement
-  - **Prettier** - Code formatting consistency
-  - **TypeScript** - Type checking and compilation
-  - **Tests** - Unit and integration test execution
+    - **ESLint** - Code linting and style enforcement
+    - **Prettier** - Code formatting consistency
+    - **TypeScript** - Type checking and compilation
+    - **Tests** - Unit and integration test execution
 - **Deployment Automation**
-  - Automated deployment to production environment
-  - Database migration execution
-  - Cache invalidation and CDN purging
-  - Rollback capabilities for failed deployments
+    - Automated deployment to production environment
+    - Database migration execution
+    - Cache invalidation and CDN purging
+    - Rollback capabilities for failed deployments
 - **Monitoring & Notifications**
-  - Deployment status notifications (Slack/Discord)
-  - Performance monitoring and alerting
-  - Error tracking and reporting
+    - Deployment status notifications (Slack/Discord)
+    - Performance monitoring and alerting
+    - Error tracking and reporting
 
 #### 📊 **Success Metrics**
+
 - API response times < 1 second
 - Zero duplicate API requests
 - 100% automated deployment success rate
@@ -292,6 +308,7 @@ enum AccountType {
 - Zero production errors on deployment
 
 ### Phase 4: External Integrations (PLANNED)
+
 - Monobank integration (via token)
 - IBKR/Freedom CSV parsing and upload
 - Rule engine for auto-categorizing transactions
@@ -299,6 +316,7 @@ enum AccountType {
 - Multi-account consolidation
 
 ### Phase 5: Advanced Analytics & Reports (PLANNED)
+
 - Multi-currency support (USD, UAH, EUR, crypto)
 - Advanced spending pattern analysis
 - Predictive budgeting with AI insights
@@ -306,6 +324,7 @@ enum AccountType {
 - Data export in multiple formats
 
 ### Phase 6: Mobile & Notifications (PLANNED)
+
 - Progressive Web App (PWA) implementation
 - Mobile-optimized interface
 - Push notifications for budget alerts

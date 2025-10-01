@@ -1,5 +1,6 @@
-import { clsx, type ClassValue } from 'clsx';
+import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { costFormatOptions } from './constants/formatting';
 
 /**
  * Combines clsx and tailwind-merge for conditional CSS class handling.
@@ -55,3 +56,21 @@ import { twMerge } from 'tailwind-merge';
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
+
+export const formatNumber = (value: number, numberFormatOptions?: Intl.NumberFormatOptions): string => {
+    if (value < 1 && value > 0) {
+        const one = 1;
+        return `<${one.toLocaleString(undefined, numberFormatOptions)}`;
+    }
+
+    return value.toLocaleString(undefined, numberFormatOptions);
+};
+export const formatCostNumber = (value: number): string => formatNumber(value, costFormatOptions);
+// value from 0 to 1
+export const formatPercentage = (value: number) => {
+    const percentageFormatter = new Intl.NumberFormat(undefined, {
+        maximumFractionDigits: 1,
+        minimumFractionDigits: 0,
+    });
+    return `${percentageFormatter.format(value * 100)}%`;
+};

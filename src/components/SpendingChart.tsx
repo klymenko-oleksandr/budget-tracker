@@ -110,7 +110,7 @@ function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = TimeRang
 
     if (loading) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow-md border">
+            <div className="bg-white p-6 rounded-lg border">
                 <div className="animate-pulse">
                     <div className="h-4 bg-slate-200 rounded w-1/3 mb-4"></div>
                     <div className="h-64 bg-slate-100 rounded"></div>
@@ -121,7 +121,7 @@ function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = TimeRang
 
     if (error) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow-md border">
+            <div className="bg-white p-6 rounded-lg border">
                 <div className="text-center py-8">
                     <p className="text-red-600 mb-4">❌ {error.message}</p>
                     <button
@@ -137,7 +137,7 @@ function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = TimeRang
 
     if (data.length === 0) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow-md border">
+            <div className="bg-white p-6 rounded-lg border">
                 <h3 className="text-lg font-semibold mb-4 text-slate-800">📊 Spending by Category - {getTimeRangeLabel()}</h3>
                 <div className="text-center py-8">
                     <p className="text-slate-500 mb-2">📈 No spending data available</p>
@@ -148,7 +148,7 @@ function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = TimeRang
     }
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md border">
+        <div className="bg-white p-6 rounded-lg border">
             <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-semibold text-slate-800">📊 Spending by Category - {getTimeRangeLabel()}</h3>
                 <div className="text-sm text-slate-600">Total: {formatCurrency(totalSpending)}</div>
