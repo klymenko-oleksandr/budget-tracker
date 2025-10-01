@@ -1,9 +1,11 @@
 'use client';
 
-import React, { memo } from 'react';
+import React, { memo, ReactElement, ReactNode } from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, PieLabel, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useSpendingData } from '@/hooks/useDashboardData';
 import { TimeRanges } from '@/types/time-range.model';
+import { TooltipProps } from 'recharts/types/component/Tooltip';
+import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
 
 interface SpendingData {
     categoryId: string;
@@ -67,7 +69,7 @@ function SpendingChart({ refreshTrigger, chartType = 'pie', timeRange = TimeRang
         }
     };
 
-    const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: TooltipPayload[] }) => {
+    const CustomTooltip = ({ active, payload }: TooltipProps<ValueType, NameType>): ReactNode => {
         if (active && payload && payload.length) {
             const data = payload[0].payload as SpendingData;
             return (
