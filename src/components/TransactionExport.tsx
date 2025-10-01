@@ -101,7 +101,7 @@ export default function TransactionExport({ transactions }: TransactionExportPro
     }
 
     return (
-        <div className="bg-white p-4 rounded-lg shadow-md border">
+        <div className="bg-white p-4 rounded-lg border">
             <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-slate-800">📊 Export & Summary</h3>
                 <div className="text-sm text-slate-600">{transactions.length} transactions</div>

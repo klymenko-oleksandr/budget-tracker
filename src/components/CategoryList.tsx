@@ -73,7 +73,7 @@ export default function CategoryList({ refreshTrigger, onEditCategory }: Categor
 
     if (loading) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow-md border">
+            <div className="bg-white p-6 rounded-lg border">
                 <div className="animate-pulse">
                     <div className="h-4 bg-slate-200 rounded w-1/4 mb-4"></div>
                     <div className="space-y-3">
@@ -88,7 +88,7 @@ export default function CategoryList({ refreshTrigger, onEditCategory }: Categor
 
     if (error) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow-md border">
+            <div className="bg-white p-6 rounded-lg border">
                 <div className="text-center py-8">
                     <p className="text-red-600 mb-4">❌ {error}</p>
                     <button
@@ -104,7 +104,7 @@ export default function CategoryList({ refreshTrigger, onEditCategory }: Categor
 
     if (categories.length === 0) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow-md border">
+            <div className="bg-white p-6 rounded-lg border">
                 <h2 className="text-xl font-semibold mb-4 text-slate-800">Categories</h2>
                 <div className="text-center py-8">
                     <p className="text-slate-500 mb-4">🏷️ No categories yet</p>
@@ -115,15 +115,15 @@ export default function CategoryList({ refreshTrigger, onEditCategory }: Categor
     }
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md border">
-            <div className="flex justify-between items-center mb-6">
+        <div className="bg-white p-6 rounded-lg border">
+            <div className="flex justify-between items-center flex-wrap mb-6">
                 <h2 className="text-xl font-semibold text-slate-800">Categories ({categories.length})</h2>
                 <div className="text-sm text-slate-500">Manage your spending categories and budgets</div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {categories.map((category) => (
-                    <div key={category.id} className="border border-slate-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div key={category.id} className="border border-slate-200 rounded-lg p-4 transition-shadow">
                         <div className="flex items-start justify-between mb-3">
                             <div className="flex items-center space-x-2">
                                 <span className="text-2xl">{category.icon || '📦'}</span>

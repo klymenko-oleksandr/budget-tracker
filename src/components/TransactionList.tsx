@@ -164,7 +164,7 @@ export default function TransactionList({ refreshTrigger, onEditTransaction, fil
 
     if (loading) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow-md border">
+            <div className="bg-white p-6 rounded-lg border">
                 <div className="animate-pulse">
                     <div className="h-4 bg-slate-200 rounded w-1/4 mb-4"></div>
                     <div className="space-y-3">
@@ -179,7 +179,7 @@ export default function TransactionList({ refreshTrigger, onEditTransaction, fil
 
     if (error) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow-md border">
+            <div className="bg-white p-6 rounded-lg border">
                 <div className="text-center py-8">
                     <p className="text-red-600 mb-4">❌ {error}</p>
                     <button
@@ -195,7 +195,7 @@ export default function TransactionList({ refreshTrigger, onEditTransaction, fil
 
     if (transactions.length === 0) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow-md border">
+            <div className="bg-white p-6 rounded-lg border">
                 <h2 className="text-xl font-semibold mb-4 text-slate-800">Recent Transactions</h2>
                 <div className="text-center py-8">
                     <p className="text-slate-500 mb-4">📝 No transactions yet</p>
@@ -206,7 +206,7 @@ export default function TransactionList({ refreshTrigger, onEditTransaction, fil
     }
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md border">
+        <div className="bg-white p-6 rounded-lg border">
             <h2 className="text-xl font-semibold mb-4 text-slate-800">Recent Transactions ({transactions.length})</h2>
 
             <div className="space-y-3">
@@ -216,11 +216,11 @@ export default function TransactionList({ refreshTrigger, onEditTransaction, fil
                         className={`flex items-center justify-between p-4 border border-slate-200 rounded-lg 
                                    hover:bg-slate-50 transition-colors`}
                     >
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center flex-wrap space-x-4">
                             <div className="text-2xl">{getTransactionTypeIcon(transaction.type)}</div>
 
                             <div className="flex-1">
-                                <div className="flex items-center space-x-2">
+                                <div className="flex items-center flex-wrap space-x-2">
                                     <h3 className="font-medium text-slate-800">{transaction.description || 'No description'}</h3>
                                     {transaction.category && (
                                         <span

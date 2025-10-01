@@ -155,7 +155,7 @@ export default function CategoryForm({ category, onSuccess, onCancel, mode = 'ed
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md border">
+        <div className="bg-white p-6 rounded-lg border">
             <h2 className="text-xl font-semibold mb-4 text-slate-800">
                 {mode === 'create' ? 'Create New Category' : `Edit Category: ${category?.name}`}
             </h2>

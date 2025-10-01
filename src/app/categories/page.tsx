@@ -55,8 +55,8 @@ export default function CategoriesPage() {
     }
 
     return (
-        <div className="p-10 space-y-6">
-            <div className="mb-8">
+        <>
+            <div>
                 <h1 className="text-3xl font-bold mb-2">Categories 🏷️</h1>
                 <p className="text-slate-600">Organize your spending with custom categories and budgets</p>
             </div>
@@ -91,6 +91,6 @@ export default function CategoriesPage() {
 
             {/* Categories List */}
             <CategoryList refreshTrigger={refreshTrigger} onEditCategory={handleEditCategory} />
-        </div>
+        </>
     );
 }

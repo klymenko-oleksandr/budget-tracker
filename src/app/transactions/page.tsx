@@ -64,7 +64,7 @@ export default function TransactionsPage() {
     }
 
     return (
-        <div className="p-10">
+        <>
             <div className="mb-8">
                 <h1 className="text-3xl font-bold mb-2">Transactions 💳</h1>
                 <p className="text-slate-600">Track and manage all your income and expenses</p>
@@ -72,7 +72,7 @@ export default function TransactionsPage() {
 
             <div className="space-y-6">
                 {/* Action Buttons */}
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center flex-wrap gap-2">
                     <h2 className="text-xl font-semibold text-slate-800">Manage Transactions</h2>
                     <div className="flex gap-3">
                         {!showForm && !editingTransaction && (
@@ -119,6 +119,6 @@ export default function TransactionsPage() {
                 {/* Transaction Export */}
                 <TransactionExport transactions={currentTransactions} filters={filters} />
             </div>
-        </div>
+        </>
     );
 }

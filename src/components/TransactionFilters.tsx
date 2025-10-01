@@ -115,7 +115,7 @@ export default function TransactionFilters({ onFiltersChange, onReset }: Transac
     };
 
     return (
-        <div className="bg-white p-4 rounded-lg shadow-md border">
+        <div className="bg-white p-4 rounded-lg border">
             <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-slate-800 flex items-center">
                     🔍 Filter Transactions

@@ -106,7 +106,7 @@ export default function TransactionForm({ onSuccess, onCancel }: TransactionForm
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md border">
+        <div className="bg-white p-6 rounded-lg border">
             <h2 className="text-xl font-semibold mb-4 text-slate-800">Add New Transaction</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">

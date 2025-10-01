@@ -129,7 +129,7 @@ export default function TransactionEditForm({ transaction, onSuccess, onCancel }
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md border">
+        <div className="bg-white p-6 rounded-lg border">
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold text-slate-800">Edit Transaction</h2>
                 <div className="flex items-center space-x-2">
